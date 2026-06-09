@@ -63,8 +63,20 @@ REVIEWS = [
      "title": "Space Category dimension variations (master-detail)",
      "desc": "Rebuilds the Space Categories screen (Produce → Capacity → Categories & Types) as a master-detail: category "
              "list on the left, a per-category variations grid on the right, with an editable default (all sites/all customers) row plus overrides.",
-     "look_for": "A category is created, then selected on the left — its dimension variations load on the right, including "
-                 "the editable default “All sites / All customers” row."},
+     "look_for": "Walking real SFG categories (SP-4IN, SP-1GAL…): each one's dimension variations load on the right — "
+                 "default “All sites / All customers” rows, customer-specific overrides, and the Edit Default dialog."},
+    {"id": 8510, "product": "PRODUCE", "video": "8510.webm", "repo": "worksuite-pwa",
+     "title": "Material item side panel — Inventory tab",
+     "desc": "Replaces the “Coming Soon” placeholder on the Inventory tab of the Material Item side panel with a read-only "
+             "per-bin on-hand AG Grid for the selected material item, keyed to the globally-selected site (HGI-11 query).",
+     "look_for": "Open a material item — the side panel now has Vendors / Chemical Compliance / Inventory tabs; the "
+                 "Inventory tab renders the per-bin on-hand view for whatever site is globally selected."},
+    {"id": 8363, "product": "PRODUCE", "video": "8363.webm", "repo": "worksuite-pwa",
+     "title": "Material item side panel — Add Vendor dialog",
+     "desc": "Adds vendor assignment to the Material Item side panel: an Add Vendor dialog with a vendor picker, vendor "
+             "item ID, and a set-as-default flag (first vendor auto-defaults).",
+     "look_for": "From the Vendors tab, Add Vendor opens the assignment dialog — vendor picker, Vendor Item ID, and the "
+                 "“first vendor marked as default” behavior."},
 ]
 
 def card(r):
@@ -132,7 +144,7 @@ HTML = f'''<!doctype html>
 </main>
 <footer style="background:#3F4948; color:white; margin-top:24px;">
   <div class="max-w-5xl mx-auto px-6 py-5 flex justify-between items-center flex-wrap gap-3">
-    <div class="text-sm" style="color:rgba(255,255,255,0.85);">Recorded against red (worksuite.silverfern.red) · BPF test tenant · June 9 build</div>
+    <div class="text-sm" style="color:rgba(255,255,255,0.85);">Recorded against red (worksuite.silverfern.red) · SFG tenant · June 9 build</div>
     <div class="text-xs italic" style="color:#A1DBA6; font-family:'PT Serif',serif;">Authentic · Innovative · Expert</div>
   </div>
 </footer>
