@@ -23,7 +23,7 @@
   <div class="max-w-5xl mx-auto px-6 py-7">
     <div class="sf-eyebrow" style="color:#A1DBA6;">Silver Fern · Sprint Review</div>
     <h1 style="font-weight:700; text-transform:uppercase; letter-spacing:0.125em; font-size:30px; margin-top:6px;">Sprint 28 — Feature Reviews</h1>
-    <div class="sf-h2" style="font-size:18px; margin-top:4px; color:#A1DBA6;">Recorded walkthroughs of the highlighted features — 11 of 33</div>
+    <div class="sf-h2" style="font-size:18px; margin-top:4px; color:#A1DBA6;">Recorded walkthroughs of the highlighted features — 10 of 33</div>
   </div>
 </header>
 <main class="max-w-5xl mx-auto px-6 py-10" style="display:flex; flex-direction:column; gap:22px;">
@@ -32,16 +32,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#BA3636">FULFILL</span>
-          <span class="sf-h3" style="font-size:16px;">Fulfill Orders grid — server-side per-column + set filters</span>
+          <span class="sf-h3" style="font-size:16px;">Fulfill Orders grid — server-side filters, set filters &amp; sort</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/8975" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#8975 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/8975.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Phase 1 of Fulfill Orders SSRM: per-column server-side filtering and sorting on the Orders grid (combinedOrders), filter-aware Status/Type set filters, and the server-persisted Week Number column.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">The Fulfill Orders grid now filters and sorts on the server: every column gets a per-column typed filter (text/number/date), Status and Type get set filters whose checkbox options are fetched live from the server and reflect the other active filters, and the new server-persisted Week Number column is filterable and sortable.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">The Orders grid loads server-side; filtering and sorting round-trip to the server rather than just the page in memory. Note the Week Number and Days-to-Pay columns that shipped this sprint.</p>
+        <p style="color:#3F4948; font-weight:300;">Filtering Type to &#x27;PO&#x27; reloads the grid server-side and shrinks the row count, the Status filter then only offers statuses that actually exist among PO orders, and clicking Week Number re-sorts via a server round-trip.</p>
       </div>
     </div>
 
@@ -49,16 +49,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#BA3636">FULFILL</span>
-          <span class="sf-h3" style="font-size:16px;">Orders search wired to server-side searchText</span>
+          <span class="sf-h3" style="font-size:16px;">Orders search — server-side across the full tenant</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/9212" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#9212 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/9212.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">The Fulfill orders search box now sends searchText in the agGridRows request and refreshes the SSRM cache (debounced) as you type — so it searches the full tenant order set, not just already-loaded blocks.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">The search box above the Fulfill Orders grid now searches server-side across the entire tenant&#x27;s orders — matching order number, customer name, PO #, salesperson, and ERP id — instead of only filtering the rows already loaded in the grid. Typing debounces 300ms, then the grid purge-refreshes with matches pulled fresh from the server.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Type in the search box: the grid refetches from the server across every order, not just the rows currently loaded in the browser.</p>
+        <p style="color:#3F4948; font-weight:300;">Watch a search for the tenant&#x27;s oldest (lowest) order number — a row never loaded in the initial 100-row block — come back from the server, with the status bar dropping to &quot;viewing 1 of 1 rows&quot;.</p>
       </div>
     </div>
 
@@ -73,9 +73,9 @@
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/9111.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">New &#x27;Credit Order&#x27; ribbon action on the Fulfill order screen. Credit the entire order, or specific lines (checkbox per line + a clamped quantity). Confirm calls the dedicated creditExistingOrder mutation.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Adds a Credit Order action to the Fulfill order screen: from any submitted-or-later, non-credit order you can spin up a linked Credit order — for the whole order or just selected lines with chosen quantities — without touching the original. On confirm it creates the credit via a dedicated mutation and jumps straight to the new Credit order.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Open an order and hit Credit Order in the ribbon — the dialog offers crediting the whole order or picking specific lines and quantities.</p>
+        <p style="color:#3F4948; font-weight:300;">Watch the &quot;Credit Order&quot; dialog open from the ribbon on a Submitted retail order, then the success toast and automatic navigation to the freshly created Credit order, where the Credit Order button is now disabled.</p>
       </div>
     </div>
 
@@ -83,16 +83,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#BA3636">FULFILL</span>
-          <span class="sf-h3" style="font-size:16px;">Duplicate Order action</span>
+          <span class="sf-h3" style="font-size:16px;">Duplicate Order — ribbon + right-click</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/7904" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#7904 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/7904.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Single-row Duplicate Order, from the order-detail ribbon and the orders-list right-click menu. Creates a new draft order carrying the source&#x27;s customer, terms, PO, type, delivery date, sales person, and lines.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Duplicate any FULFILL order in one click, from the order detail ribbon or by right-clicking a row in the orders list (regular orders only, not master orders). Creates a fresh-numbered Initialized draft copying the customer, terms, PO, type, delivery date, sales person, and all line items — without allocations, invoices, or payments — and jumps straight into the new draft.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Right-click an order → Duplicate Order. A new draft is created from the source (watch the “created from #…” confirmation) and opens ready to edit.</p>
+        <p style="color:#3F4948; font-weight:300;">Watch both surfaces fire: the detail-view &quot;Duplicate Order&quot; ribbon button and the list right-click menu item, each ending with the &quot;Order {new#} created from #{source#}&quot; snackbar and landing on a new Initialized draft carrying the source&#x27;s customer and line items.</p>
       </div>
     </div>
 
@@ -100,16 +100,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#BA3636">FULFILL</span>
-          <span class="sf-h3" style="font-size:16px;">Bulk Download Invoices ribbon action</span>
+          <span class="sf-h3" style="font-size:16px;">Bulk Download Invoices (ZIP)</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/7901" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#7901 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/7901.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">New ribbon button on Fulfill &gt; Orders that downloads a ZIP of invoice PDFs for the multi-selected orders — replacing the one-at-a-time download workflow.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Adds a bulk &quot;Download Invoices&quot; button to the Fulfill &gt; Orders ribbon: select any number of orders via row checkboxes and get one ZIP of their invoice PDFs, with a toast that reports downloads, skipped statuses, and master orders. Only Submitted, Shipped, and Synchronized orders have invoices; others are skipped gracefully instead of erroring.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Select one or more orders and the Download Invoices button enables, bundling their invoice PDFs into a single ZIP (it guards against orders with no invoice yet).</p>
+        <p style="color:#3F4948; font-weight:300;">Watch the disabled button&#x27;s tooltip, then 3 Shipped/Submitted orders checked → ZIP download with a &quot;Downloaded 3 invoices.&quot; toast, followed by a mixed selection showing the &quot;1 selected order has no invoice (status: Open)&quot; skip messaging.</p>
       </div>
     </div>
 
@@ -124,9 +124,9 @@
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/9182.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">A new Upgrades column on the order line-items grid opens a per-line modal to see current upgrades, add an upgrade from the item, or add an ad-hoc upgrade — with the line total recomputed live.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Adds an Upgrades column to the order line items grid: a badge-counted icon per line opens a modal where you can add item-configured or ad-hoc upgrades, override their pricing (flat price or markup %), remove them, and see the line&#x27;s base total, upgrade adjustment, and final line total update live.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Scroll the line items to the new Upgrades column; opening a line shows the per-line Upgrades modal with “add from item”, “ad-hoc upgrade”, and the running base/adjustment/line total.</p>
+        <p style="color:#3F4948; font-weight:300;">Watch the line&#x27;s Upgrade adjustment and Line total recalculate as an item upgrade and an ad-hoc upgrade are added in the modal, ending with the grid&#x27;s Upgrades icon showing a badge count of 2.</p>
       </div>
     </div>
 
@@ -134,16 +134,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#BA3636">FULFILL</span>
-          <span class="sf-h3" style="font-size:16px;">Add Integration — accounting platforms with brand logos</span>
+          <span class="sf-h3" style="font-size:16px;">Add Integration — 11 accounting platforms with brand logos</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/9060" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#9060 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/9060.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">The Add Integration picker now enables the 11 accounting platforms active in our Merge.dev workspace (QuickBooks, Xero, NetSuite, Sage Intacct, FreshBooks, …), routed through Merge Link, with official logos.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">The Add Integration picker now offers 11 connectable accounting platforms (QuickBooks Online, Xero, NetSuite, Sage Intacct, Sage Business Cloud, FreshBooks, Wave, Zoho Books, Moneybird, Clear Books, FreeAgent), each with its official brand logo, all routed through the same Merge.dev Link connect flow QuickBooks already uses. Dynamics 365 BC, Dynamics F&amp;O, Oracle Fusion Cloud ERP, and Workday remain greyed &quot;Coming Soon&quot; cards that ignore clicks.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Add Integration → the picker shows the accounting platforms with real brand logos and category filters (Accounting, E-commerce, Shipping, CRM …).</p>
+        <p style="color:#3F4948; font-weight:300;">In the Add Integration wizard&#x27;s Accounting filter, brand logos on all 15 cards, Workday greyed and unclickable, then Xero selected and continued to the &quot;Connect through Xero&quot; Merge.dev step with an enabled &quot;Connect Xero&quot; button.</p>
       </div>
     </div>
 
@@ -151,16 +151,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#BA3636">FULFILL</span>
-          <span class="sf-h3" style="font-size:16px;">Fulfill Maintenance — Containers + Shipping Config Categories</span>
+          <span class="sf-h3" style="font-size:16px;">Containers + Shipping Config Categories (cascade save)</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/7920" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#7920 ↗</a>
       </div>
       <div style="padding:18px;">
-        <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/7920.webm" type="video/webm"></video></div>
+        <div style="margin-bottom:16px;"><div style="padding:40px; text-align:center; background:#F2F2F2; border-radius:8px; color:#B3B3B3; font-style:italic;">Recording being re-shot — video coming shortly</div></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Containers use a CardView with a sidebar grouped by container code and parent/child hierarchy. The Container tab edits intrinsic fields (cascading across configs sharing the code); the Configurations tab shows the per-config grid.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Two new Fulfill maintenance pages: a Containers card view with a hierarchy sidebar grouped by container code, an Add Container / Add Configuration flow, and a Container tab whose Save cascades shared edits to every configuration sharing the code; plus a Shipping Config Categories list page whose Add/Edit instantly updates both the grid and the category dropdowns used by the container forms.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Pick a container in the left sidebar; the Container tab edits shared fields while the Configurations tab lists its per-config rows (sites, trays/layer, max layers, ship factor).</p>
+        <p style="color:#3F4948; font-weight:300;">Watch a Config Category get created, then container DEMO-CRATE built with two configurations, ending with a Container-tab rename saved via &quot;Save Container&quot; and the &quot;Updated 2 configuration row(s).&quot; snack proving the cascade across both configs.</p>
       </div>
     </div>
 
@@ -175,9 +175,9 @@
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/9217.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Rebuilds the Space Categories screen (Produce → Capacity → Categories &amp; Types) as a master-detail: category list on the left, a per-category variations grid on the right, with an editable default (all sites/all customers) row plus overrides.</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Rebuilds the Space Categories screen as a master-detail: pick a category on the left and manage its dimension variations on the right — an editable default row (all sites/all customers) plus site- and customer-specific override rows. Variations are added via the ribbon, edited by clicking a row, and deleted from the edit form; changing an override&#x27;s scope sets the new scope and clears the old one.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Walking real SFG categories (SP-4IN, SP-1GAL…): each one&#x27;s dimension variations load on the right — default “All sites / All customers” rows, customer-specific overrides, and the Edit Default dialog.</p>
+        <p style="color:#3F4948; font-weight:300;">Selecting SP-4IN reveals its default + override rows, adding a site-scoped variation pops &#x27;Variation saved&#x27; and a new grid row (chip goes to &#x27;3 variations&#x27;), and deleting it from the Edit Variation dialog removes the row again.</p>
       </div>
     </div>
 
@@ -185,16 +185,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#DB6E14">PRODUCE</span>
-          <span class="sf-h3" style="font-size:16px;">Material item side panel — Inventory tab</span>
+          <span class="sf-h3" style="font-size:16px;">Material item side panel — live Inventory tab</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/8510" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#8510 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/8510.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Replaces the “Coming Soon” placeholder on the Inventory tab of the Material Item side panel with a read-only per-bin on-hand AG Grid for the selected material item, keyed to the globally-selected site (HGI-11 query).</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">The Inventory tab on the Material Item side panel (PRODUCE &gt; Production &gt; Material Items) is now wired to live hardgoods inventory data: it queries per-bin on-hand for the selected item at the globally-selected site (Bin / On Hand / Last Counted) instead of showing &quot;Coming Soon&quot;.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">Open a material item — the side panel now has Vendors / Chemical Compliance / Inventory tabs; the Inventory tab renders the per-bin on-hand view for whatever site is globally selected.</p>
+        <p style="color:#3F4948; font-weight:300;">Open a material item&#x27;s Inventory tab: with no site it prompts &quot;Select a site to view inventory&quot;; after picking a site on Space Planning it queries the hardgoods inventory grid and shows the per-bin data (or &quot;No inventory recorded for this material item at the selected site.&quot; on SFG, which has no bin counts).</p>
       </div>
     </div>
 
@@ -202,16 +202,16 @@
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:#DB6E14">PRODUCE</span>
-          <span class="sf-h3" style="font-size:16px;">Material item side panel — Add Vendor dialog</span>
+          <span class="sf-h3" style="font-size:16px;">Material item side panel — Add Vendor</span>
         </div>
         <a href="https://dev.azure.com/teamsilverfern/SilverFern/_git/worksuite-pwa/pullrequest/8363" target="_blank" style="color:#69936C; font-family:monospace; font-size:13px; text-decoration:none;">#8363 ↗</a>
       </div>
       <div style="padding:18px;">
         <div style="margin-bottom:16px;"><video controls preload="metadata" playsinline style="width:100%; border-radius:8px; background:#000; display:block;"><source src="videos/8363.webm" type="video/webm"></video></div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
-        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Adds vendor assignment to the Material Item side panel: an Add Vendor dialog with a vendor picker, vendor item ID, and a set-as-default flag (first vendor auto-defaults).</p>
+        <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">Adds an Add Vendor dialog to the Material Item side panel: pick a vendor (already-assigned vendors excluded), optionally enter a Vendor Item ID, and set it as default — the first vendor on an item is forced to default. On save, the vendor instantly appears as a new row in the item&#x27;s Vendors grid.</p>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">From the Vendors tab, Add Vendor opens the assignment dialog — vendor picker, Vendor Item ID, and the “first vendor marked as default” behavior.</p>
+        <p style="color:#3F4948; font-weight:300;">After selecting a vendor and clicking Add Vendor, watch for the &#x27;Vendor saved&#x27; snackbar and the new row (vendor name + DEMO-001 Vendor Item ID) appearing in the side panel&#x27;s Vendors grid.</p>
       </div>
     </div>
 </main>

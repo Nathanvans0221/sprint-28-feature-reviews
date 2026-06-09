@@ -1,0 +1,101 @@
+[
+ {
+  "id": 8975,
+  "product": "FULFILL",
+  "video": "8975.webm",
+  "repo": "worksuite-pwa",
+  "title": "Fulfill Orders grid \u2014 server-side filters, set filters & sort",
+  "desc": "The Fulfill Orders grid now filters and sorts on the server: every column gets a per-column typed filter (text/number/date), Status and Type get set filters whose checkbox options are fetched live from the server and reflect the other active filters, and the new server-persisted Week Number column is filterable and sortable.",
+  "look_for": "Filtering Type to 'PO' reloads the grid server-side and shrinks the row count, the Status filter then only offers statuses that actually exist among PO orders, and clicking Week Number re-sorts via a server round-trip."
+ },
+ {
+  "id": 9212,
+  "product": "FULFILL",
+  "video": "9212.webm",
+  "repo": "worksuite-pwa",
+  "title": "Orders search \u2014 server-side across the full tenant",
+  "desc": "The search box above the Fulfill Orders grid now searches server-side across the entire tenant's orders \u2014 matching order number, customer name, PO #, salesperson, and ERP id \u2014 instead of only filtering the rows already loaded in the grid. Typing debounces 300ms, then the grid purge-refreshes with matches pulled fresh from the server.",
+  "look_for": "Watch a search for the tenant's oldest (lowest) order number \u2014 a row never loaded in the initial 100-row block \u2014 come back from the server, with the status bar dropping to \"viewing 1 of 1 rows\"."
+ },
+ {
+  "id": 9111,
+  "product": "FULFILL",
+  "video": "9111.webm",
+  "repo": "worksuite-pwa",
+  "title": "Credit Order \u2014 create a credit from an existing order",
+  "desc": "Adds a Credit Order action to the Fulfill order screen: from any submitted-or-later, non-credit order you can spin up a linked Credit order \u2014 for the whole order or just selected lines with chosen quantities \u2014 without touching the original. On confirm it creates the credit via a dedicated mutation and jumps straight to the new Credit order.",
+  "look_for": "Watch the \"Credit Order\" dialog open from the ribbon on a Submitted retail order, then the success toast and automatic navigation to the freshly created Credit order, where the Credit Order button is now disabled."
+ },
+ {
+  "id": 7904,
+  "product": "FULFILL",
+  "video": "7904.webm",
+  "repo": "worksuite-pwa",
+  "title": "Duplicate Order \u2014 ribbon + right-click",
+  "desc": "Duplicate any FULFILL order in one click, from the order detail ribbon or by right-clicking a row in the orders list (regular orders only, not master orders). Creates a fresh-numbered Initialized draft copying the customer, terms, PO, type, delivery date, sales person, and all line items \u2014 without allocations, invoices, or payments \u2014 and jumps straight into the new draft.",
+  "look_for": "Watch both surfaces fire: the detail-view \"Duplicate Order\" ribbon button and the list right-click menu item, each ending with the \"Order {new#} created from #{source#}\" snackbar and landing on a new Initialized draft carrying the source's customer and line items."
+ },
+ {
+  "id": 7901,
+  "product": "FULFILL",
+  "video": "7901.webm",
+  "repo": "worksuite-pwa",
+  "title": "Bulk Download Invoices (ZIP)",
+  "desc": "Adds a bulk \"Download Invoices\" button to the Fulfill > Orders ribbon: select any number of orders via row checkboxes and get one ZIP of their invoice PDFs, with a toast that reports downloads, skipped statuses, and master orders. Only Submitted, Shipped, and Synchronized orders have invoices; others are skipped gracefully instead of erroring.",
+  "look_for": "Watch the disabled button's tooltip, then 3 Shipped/Submitted orders checked \u2192 ZIP download with a \"Downloaded 3 invoices.\" toast, followed by a mixed selection showing the \"1 selected order has no invoice (status: Open)\" skip messaging."
+ },
+ {
+  "id": 9182,
+  "product": "PRODUCE",
+  "video": "9182.webm",
+  "repo": "worksuite-pwa",
+  "title": "Order-line Upgrades panel (Value Adds)",
+  "desc": "Adds an Upgrades column to the order line items grid: a badge-counted icon per line opens a modal where you can add item-configured or ad-hoc upgrades, override their pricing (flat price or markup %), remove them, and see the line's base total, upgrade adjustment, and final line total update live.",
+  "look_for": "Watch the line's Upgrade adjustment and Line total recalculate as an item upgrade and an ad-hoc upgrade are added in the modal, ending with the grid's Upgrades icon showing a badge count of 2."
+ },
+ {
+  "id": 9060,
+  "product": "FULFILL",
+  "video": "9060.webm",
+  "repo": "worksuite-pwa",
+  "title": "Add Integration \u2014 11 accounting platforms with brand logos",
+  "desc": "The Add Integration picker now offers 11 connectable accounting platforms (QuickBooks Online, Xero, NetSuite, Sage Intacct, Sage Business Cloud, FreshBooks, Wave, Zoho Books, Moneybird, Clear Books, FreeAgent), each with its official brand logo, all routed through the same Merge.dev Link connect flow QuickBooks already uses. Dynamics 365 BC, Dynamics F&O, Oracle Fusion Cloud ERP, and Workday remain greyed \"Coming Soon\" cards that ignore clicks.",
+  "look_for": "In the Add Integration wizard's Accounting filter, brand logos on all 15 cards, Workday greyed and unclickable, then Xero selected and continued to the \"Connect through Xero\" Merge.dev step with an enabled \"Connect Xero\" button."
+ },
+ {
+  "id": 7920,
+  "product": "FULFILL",
+  "video": "7920.webm",
+  "repo": "worksuite-pwa",
+  "title": "Containers + Shipping Config Categories (cascade save)",
+  "desc": "Two new Fulfill maintenance pages: a Containers card view with a hierarchy sidebar grouped by container code, an Add Container / Add Configuration flow, and a Container tab whose Save cascades shared edits to every configuration sharing the code; plus a Shipping Config Categories list page whose Add/Edit instantly updates both the grid and the category dropdowns used by the container forms.",
+  "look_for": "Watch a Config Category get created, then container DEMO-CRATE built with two configurations, ending with a Container-tab rename saved via \"Save Container\" and the \"Updated 2 configuration row(s).\" snack proving the cascade across both configs."
+ },
+ {
+  "id": 9217,
+  "product": "PRODUCE",
+  "video": "9217.webm",
+  "repo": "worksuite-pwa",
+  "title": "Space Category dimension variations (master-detail)",
+  "desc": "Rebuilds the Space Categories screen as a master-detail: pick a category on the left and manage its dimension variations on the right \u2014 an editable default row (all sites/all customers) plus site- and customer-specific override rows. Variations are added via the ribbon, edited by clicking a row, and deleted from the edit form; changing an override's scope sets the new scope and clears the old one.",
+  "look_for": "Selecting SP-4IN reveals its default + override rows, adding a site-scoped variation pops 'Variation saved' and a new grid row (chip goes to '3 variations'), and deleting it from the Edit Variation dialog removes the row again."
+ },
+ {
+  "id": 8510,
+  "product": "PRODUCE",
+  "video": "8510.webm",
+  "repo": "worksuite-pwa",
+  "title": "Material item side panel \u2014 live Inventory tab",
+  "desc": "The Inventory tab on the Material Item side panel (PRODUCE > Production > Material Items) is now wired to live hardgoods inventory data: it queries per-bin on-hand for the selected item at the globally-selected site (Bin / On Hand / Last Counted) instead of showing \"Coming Soon\".",
+  "look_for": "Open a material item's Inventory tab: with no site it prompts \"Select a site to view inventory\"; after picking a site on Space Planning it queries the hardgoods inventory grid and shows the per-bin data (or \"No inventory recorded for this material item at the selected site.\" on SFG, which has no bin counts)."
+ },
+ {
+  "id": 8363,
+  "product": "PRODUCE",
+  "video": "8363.webm",
+  "repo": "worksuite-pwa",
+  "title": "Material item side panel \u2014 Add Vendor",
+  "desc": "Adds an Add Vendor dialog to the Material Item side panel: pick a vendor (already-assigned vendors excluded), optionally enter a Vendor Item ID, and set it as default \u2014 the first vendor on an item is forced to default. On save, the vendor instantly appears as a new row in the item's Vendors grid.",
+  "look_for": "After selecting a vendor and clicking Add Vendor, watch for the 'Vendor saved' snackbar and the new row (vendor name + DEMO-001 Vendor Item ID) appearing in the side panel's Vendors grid."
+ }
+]

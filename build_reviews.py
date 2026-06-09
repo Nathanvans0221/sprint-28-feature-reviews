@@ -10,74 +10,7 @@ PRODUCT_COLORS = {
 PR = "https://dev.azure.com/teamsilverfern/SilverFern/_git/{repo}/pullrequest/{id}"
 TOTAL_HIGHLIGHTS = 33
 
-REVIEWS = [
-    {"id": 8975, "product": "FULFILL", "video": "8975.webm", "repo": "worksuite-pwa",
-     "title": "Fulfill Orders grid — server-side per-column + set filters",
-     "desc": "Phase 1 of Fulfill Orders SSRM: per-column server-side filtering and sorting on the Orders grid "
-             "(combinedOrders), filter-aware Status/Type set filters, and the server-persisted Week Number column.",
-     "look_for": "The Orders grid loads server-side; filtering and sorting round-trip to the server rather than just "
-                 "the page in memory. Note the Week Number and Days-to-Pay columns that shipped this sprint."},
-    {"id": 9212, "product": "FULFILL", "video": "9212.webm", "repo": "worksuite-pwa",
-     "title": "Orders search wired to server-side searchText",
-     "desc": "The Fulfill orders search box now sends searchText in the agGridRows request and refreshes the SSRM cache "
-             "(debounced) as you type — so it searches the full tenant order set, not just already-loaded blocks.",
-     "look_for": "Type in the search box: the grid refetches from the server across every order, not just the rows "
-                 "currently loaded in the browser."},
-    {"id": 9111, "product": "FULFILL", "video": "9111.webm", "repo": "worksuite-pwa",
-     "title": "Credit Order — create a credit from an existing order",
-     "desc": "New 'Credit Order' ribbon action on the Fulfill order screen. Credit the entire order, or specific lines "
-             "(checkbox per line + a clamped quantity). Confirm calls the dedicated creditExistingOrder mutation.",
-     "look_for": "Open an order and hit Credit Order in the ribbon — the dialog offers crediting the whole order or "
-                 "picking specific lines and quantities."},
-    {"id": 7904, "product": "FULFILL", "video": "7904.webm", "repo": "worksuite-pwa",
-     "title": "Duplicate Order action",
-     "desc": "Single-row Duplicate Order, from the order-detail ribbon and the orders-list right-click menu. Creates a "
-             "new draft order carrying the source's customer, terms, PO, type, delivery date, sales person, and lines.",
-     "look_for": "Right-click an order → Duplicate Order. A new draft is created from the source (watch the "
-                 "“created from #…” confirmation) and opens ready to edit."},
-    {"id": 7901, "product": "FULFILL", "video": "7901.webm", "repo": "worksuite-pwa",
-     "title": "Bulk Download Invoices ribbon action",
-     "desc": "New ribbon button on Fulfill > Orders that downloads a ZIP of invoice PDFs for the multi-selected orders — "
-             "replacing the one-at-a-time download workflow.",
-     "look_for": "Select one or more orders and the Download Invoices button enables, bundling their invoice PDFs into a "
-                 "single ZIP (it guards against orders with no invoice yet)."},
-    {"id": 9182, "product": "PRODUCE", "video": "9182.webm", "repo": "worksuite-pwa",
-     "title": "Order-line Upgrades panel (Value Adds)",
-     "desc": "A new Upgrades column on the order line-items grid opens a per-line modal to see current upgrades, add an "
-             "upgrade from the item, or add an ad-hoc upgrade — with the line total recomputed live.",
-     "look_for": "Scroll the line items to the new Upgrades column; opening a line shows the per-line Upgrades modal with "
-                 "“add from item”, “ad-hoc upgrade”, and the running base/adjustment/line total."},
-    {"id": 9060, "product": "FULFILL", "video": "9060.webm", "repo": "worksuite-pwa",
-     "title": "Add Integration — accounting platforms with brand logos",
-     "desc": "The Add Integration picker now enables the 11 accounting platforms active in our Merge.dev workspace "
-             "(QuickBooks, Xero, NetSuite, Sage Intacct, FreshBooks, …), routed through Merge Link, with official logos.",
-     "look_for": "Add Integration → the picker shows the accounting platforms with real brand logos and category filters "
-                 "(Accounting, E-commerce, Shipping, CRM …)."},
-    {"id": 7920, "product": "FULFILL", "video": "7920.webm", "repo": "worksuite-pwa",
-     "title": "Fulfill Maintenance — Containers + Shipping Config Categories",
-     "desc": "Containers use a CardView with a sidebar grouped by container code and parent/child hierarchy. The Container "
-             "tab edits intrinsic fields (cascading across configs sharing the code); the Configurations tab shows the per-config grid.",
-     "look_for": "Pick a container in the left sidebar; the Container tab edits shared fields while the Configurations tab "
-                 "lists its per-config rows (sites, trays/layer, max layers, ship factor)."},
-    {"id": 9217, "product": "PRODUCE", "video": "9217.webm", "repo": "worksuite-pwa",
-     "title": "Space Category dimension variations (master-detail)",
-     "desc": "Rebuilds the Space Categories screen (Produce → Capacity → Categories & Types) as a master-detail: category "
-             "list on the left, a per-category variations grid on the right, with an editable default (all sites/all customers) row plus overrides.",
-     "look_for": "Walking real SFG categories (SP-4IN, SP-1GAL…): each one's dimension variations load on the right — "
-                 "default “All sites / All customers” rows, customer-specific overrides, and the Edit Default dialog."},
-    {"id": 8510, "product": "PRODUCE", "video": "8510.webm", "repo": "worksuite-pwa",
-     "title": "Material item side panel — Inventory tab",
-     "desc": "Replaces the “Coming Soon” placeholder on the Inventory tab of the Material Item side panel with a read-only "
-             "per-bin on-hand AG Grid for the selected material item, keyed to the globally-selected site (HGI-11 query).",
-     "look_for": "Open a material item — the side panel now has Vendors / Chemical Compliance / Inventory tabs; the "
-                 "Inventory tab renders the per-bin on-hand view for whatever site is globally selected."},
-    {"id": 8363, "product": "PRODUCE", "video": "8363.webm", "repo": "worksuite-pwa",
-     "title": "Material item side panel — Add Vendor dialog",
-     "desc": "Adds vendor assignment to the Material Item side panel: an Add Vendor dialog with a vendor picker, vendor "
-             "item ID, and a set-as-default flag (first vendor auto-defaults).",
-     "look_for": "From the Vendors tab, Add Vendor opens the assignment dialog — vendor picker, Vendor Item ID, and the "
-                 "“first vendor marked as default” behavior."},
-]
+REVIEWS = __import__("json").load(open(__import__("os").path.join(__import__("os").path.dirname(__file__), "reviews_copy.json")))
 
 def card(r):
     c = PRODUCT_COLORS.get(r["product"], "#6B7280")
@@ -89,7 +22,7 @@ def card(r):
                  f'<source src="videos/{r["video"]}" type="video/webm"></video>')
     else:
         media = ('<div style="padding:40px; text-align:center; background:#F2F2F2; border-radius:8px; '
-                 'color:#B3B3B3; font-style:italic;">Recording pending / blocked — no test data on this tenant</div>')
+                 'color:#B3B3B3; font-style:italic;">Recording being re-shot — video coming shortly</div>')
     return f'''
     <div class="sf-card" style="overflow:hidden;">
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
