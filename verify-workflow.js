@@ -16,16 +16,16 @@ const SCHEMA = {
   },
 }
 
-const PRS = [9182, 7920, 9111, 7901]
+const PRS = [8738, 8802, 8804, 9062, 8089, 8220, 8876, 8093, 7753, 7861, 9110, 9171, 8571]
 
 phase('Verify')
 const verdicts = await parallel(PRS.map(pr => () => agent(`You are verifying a screen-recorded feature demo video for PR #${pr} of worksuite-pwa, recorded against the live app. Judge STRICTLY — this video will be reviewed by the Director of Product, and the previous batch was rejected for mistakes.
 
 DO THIS:
-1. Find the video: run  V=$(find /home/natha/projects/ado-playwright-tests/reviews-output -name "*.webm" -path "*${pr}*" | head -1); echo $V  — if none exists, return pass=false severity=broken with issue "no video produced".
+1. Find the video: V=/home/natha/projects/sprint-28-feature-reviews/videos/${pr}.webm — if that file does not exist, fall back to  V=$(find /home/natha/projects/ado-playwright-tests/reviews-output -name "*.webm" -path "*${pr}*" | head -1)  — if neither exists, return pass=false severity=broken with issue "no video produced".
 2. Get its duration:  ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$V"
 3. Extract 6 frames spread across the video into /tmp/verify-frames/ (create the dir):  for pct in 5 25 45 65 85 99; do ... done  — compute timestamps as duration*pct/100 (use ffmpeg -ss <t> -i "$V" -frames:v 1 /tmp/verify-frames/${pr}_<pct>.png). For the 99% frame use ffmpeg -sseof -2.
-4. Read the expected demo script: run  python3 -c "import json; d=json.load(open('/tmp/demo_scripts.json')); s=d['${pr}']; print(json.dumps({'steps': s['demo_steps'], 'pitfalls': s['pitfalls']}, indent=1))"
+4. Read the expected demo script: run  python3 -c "import json; d=json.load(open('/tmp/demo_scripts_all.json')); s=d['${pr}']; print(json.dumps({'steps': s['demo_steps'], 'pitfalls': s['pitfalls']}, indent=1))"
 5. Read EACH extracted frame with the Read tool and compare what you see against the expected steps, especially the FINAL frame vs the expected proof end-state.
 
 JUDGING CRITERIA:

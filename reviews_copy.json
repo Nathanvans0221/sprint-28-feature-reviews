@@ -168,7 +168,7 @@
   "repo": "worksuite-pwa",
   "title": "Mobile \"My Counts Today\" (assigned cycle counts)",
   "desc": "Workers now get a \"My Counts Today\" screen in the Material mobile app. Cycle counts assigned from the desktop Hardgoods Inventory page (one task per bin where the item is stocked) appear on the assignee's phone with expected quantities and a progress bar. Counting a quantity that matches expectations submits in one tap; any variance forces a reason pick (Damaged, Moved, etc.) before submitting, and unreachable bins can be skipped with a note. Submissions post through the offline-capable queue and completed counts write straight back to hardgoods on-hand.",
-  "look_for": "Watch the full loop: desktop 'Assign Cycle Count' dialog creating 3 tasks (one per bin) sent to the worker; the mobile list showing Expected 24/12/7 with live progress; the variance gate \u2014 submitting 11 vs expected 12 is blocked until a Variance Reason is chosen; and the ending 'All counts complete for today' celebration once all 3 bins are counted."
+  "look_for": "The new mobile My Counts Today screen, then the desktop Assign Cycle Count flow ending with 'Assignment created \u2014 3 tasks sent'. Note: the mobile task list can't populate on red \u2014 recording this demo uncovered a wsapi bug (assignments store a dashless worker id but the my-tasks query filters on the dashed FusionAuth sub), flagged for follow-up."
  },
  {
   "id": 7753,
