@@ -20,11 +20,15 @@ def card(r):
         media = (f'<video controls preload="metadata" playsinline '
                  f'style="width:100%; border-radius:8px; background:#000; display:block;">'
                  f'<source src="videos/{r["video"]}" type="video/webm"></video>')
+    elif r.get("no_video_reason"):
+        media = (f'<div style="padding:26px; text-align:center; background:#F2F2F2; border-radius:8px; color:#6B7280;">'
+                 f'<div style="font-weight:600; letter-spacing:0.08em; font-size:11px; text-transform:uppercase; color:#69936C; margin-bottom:6px;">Shipped — no UI demo</div>'
+                 f'<div style="font-weight:300; font-size:14px;">{html.escape(r["no_video_reason"])}</div></div>')
     else:
         media = ('<div style="padding:40px; text-align:center; background:#F2F2F2; border-radius:8px; '
                  'color:#B3B3B3; font-style:italic;">Recording being re-shot — video coming shortly</div>')
     return f'''
-    <div class="sf-card" style="overflow:hidden;">
+    <div class="sf-card review-card" data-product="{html.escape(r["product"])}" style="overflow:hidden;">
       <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #F2F2F2;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="chip" style="background:{c}">{html.escape(r["product"])}</span>
@@ -36,12 +40,18 @@ def card(r):
         <div style="margin-bottom:16px;">{media}</div>
         <div class="sf-eyebrow" style="margin-bottom:4px;">What it does</div>
         <p style="color:#3F4948; font-weight:300; margin-bottom:12px;">{html.escape(r["desc"])}</p>
-        <div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div>
-        <p style="color:#3F4948; font-weight:300;">{html.escape(r["look_for"])}</p>
+        {f'<div class="sf-eyebrow" style="margin-bottom:4px;">What to look for</div><p style="color:#3F4948; font-weight:300;">{html.escape(r["look_for"])}</p>' if r.get("look_for") else ''}
       </div>
     </div>'''
 
 cards = "\n".join(card(r) for r in REVIEWS)
+_prods = []
+for _r in REVIEWS:
+    if _r["product"] not in _prods: _prods.append(_r["product"])
+def _chip(label, value, color):
+    return (f'<button class="filter-chip chip" onclick="filterProduct(\'{value}\', this)" '
+            f'style="background:{color}; border:none; cursor:pointer; opacity:{1 if value=="ALL" else 0.45};">{label}</button>')
+chips = _chip("All", "ALL", "#3F4948") + "".join(_chip(p, p, PRODUCT_COLORS.get(p, "#6B7280")) for p in _prods)
 recorded = sum(1 for r in REVIEWS if r.get("video") and os.path.exists(os.path.join(os.path.dirname(__file__), "videos", r["video"])))
 
 HTML = f'''<!doctype html>
@@ -72,9 +82,24 @@ HTML = f'''<!doctype html>
     <div class="sf-h2" style="font-size:18px; margin-top:4px; color:#A1DBA6;">Recorded walkthroughs of the highlighted features — {recorded} of {TOTAL_HIGHLIGHTS}</div>
   </div>
 </header>
-<main class="max-w-5xl mx-auto px-6 py-10" style="display:flex; flex-direction:column; gap:22px;">
+<div class="max-w-5xl mx-auto px-6 pt-8" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+  <span class="sf-eyebrow" style="margin-right:6px;">Filter</span>
+  {chips}
+</div>
+<main class="max-w-5xl mx-auto px-6 py-6" style="display:flex; flex-direction:column; gap:22px;">
 {cards}
 </main>
+<script>
+  function filterProduct(prod, el) {{
+    document.querySelectorAll('.review-card').forEach(c => {{
+      c.style.display = (prod === 'ALL' || c.dataset.product === prod) ? '' : 'none';
+    }});
+    document.querySelectorAll('.filter-chip').forEach(ch => {{
+      ch.style.opacity = (ch === el) ? '1' : '0.45';
+      ch.style.outline = (ch === el) ? '2px solid #2E3635' : 'none';
+    }});
+  }}
+</script>
 <footer style="background:#3F4948; color:white; margin-top:24px;">
   <div class="max-w-5xl mx-auto px-6 py-5 flex justify-between items-center flex-wrap gap-3">
     <div class="text-sm" style="color:rgba(255,255,255,0.85);">Recorded against red (worksuite.silverfern.red) · SFG tenant · June 9 build</div>

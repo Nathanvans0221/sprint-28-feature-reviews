@@ -46,7 +46,7 @@
  },
  {
   "id": 9182,
-  "product": "PRODUCE",
+  "product": "FULFILL",
   "video": "9182.webm",
   "repo": "worksuite-pwa",
   "title": "Order-line Upgrades panel (Value Adds)",
@@ -97,5 +97,212 @@
   "title": "Material item side panel \u2014 Add Vendor",
   "desc": "Adds an Add Vendor dialog to the Material Item side panel: pick a vendor (already-assigned vendors excluded), optionally enter a Vendor Item ID, and set it as default \u2014 the first vendor on an item is forced to default. On save, the vendor instantly appears as a new row in the item's Vendors grid.",
   "look_for": "After selecting a vendor and clicking Add Vendor, watch for the 'Vendor saved' snackbar and the new row (vendor name + DEMO-001 Vendor Item ID) appearing in the side panel's Vendors grid."
+ },
+ {
+  "id": 8738,
+  "product": "FULFILL",
+  "video": "8738.webm",
+  "repo": "worksuite-pwa",
+  "title": "Items \u2014 inline config category creation + editable pricing",
+  "desc": "Items no longer force a detour to Product Maintenance: the config-category picker on the Fulfill item form gets a \"Create new config category\" quick-add (Name + Default Size UOM) that creates and auto-selects the category in place. The item Pricing tab also goes from read-only to editable \u2014 \"Add Price Level\" (ribbon in card view, modal footer in grid view) and row-click editing, saved via mergePriceLevel, with the tenant default price group badged in the grid.",
+  "look_for": "Watch for the \"Create new config category\" action at the top of the picker dropdown, the \"Create Config Category\" modal (Name + Default Size UOM *), and the new category appearing instantly as a selected chip after \"Config Category saved\". On the Pricing tab: the \"Default\" chip on the default price group, the \"Add Price Level\" footer button, the new $12.50/$15.00 row appearing after \"Price Level saved\", and row-click opening \"Edit Price Level\" with the price group locked."
+ },
+ {
+  "id": 8802,
+  "product": "FULFILL",
+  "video": "8802.webm",
+  "repo": "worksuite-pwa",
+  "title": "Items \u2014 nested Size UOM quick-add",
+  "desc": "Fulfill items screen: create Size UOMs inline via a nested quick-add. Inside the Edit Item modal, the 'Add config category' dropdown offers 'Create new config category'; in that modal, the 'Default Size UOM *' dropdown now offers 'Create new size UOM', opening a nested Create Size UOM modal (Code / Eaches Per Unit / Description). The new UOM is auto-selected via optimistic cache insert. Also fixes attribute-only item saves that previously failed with a 'no changes' error.",
+  "look_for": "The two-deep modal nesting: 'Create new size UOM' button appearing at the top of the Default Size UOM dropdown, the nested 'Create Size UOM' modal, 'Size UOM saved' snack, the new UOM instantly selected as 'CODE \u2014 description' without a refetch, then 'Config Category saved' chip on the item and a successful 'Item updated' save (the bundled fix) with the chip persisting on reopen."
+ },
+ {
+  "id": 8804,
+  "product": "PRODUCE",
+  "video": "8804.webm",
+  "repo": "worksuite-pwa",
+  "title": "Space Planning + Production Schedule fixes",
+  "desc": "PRODUCE polish pass: the Production Schedule's step numbering now counts real phases \u2014 a combo's concurrent component jobs that start the same week share one step, so the grid 'Step' column and the Job Details 'Step X of Y' chip read 'of 2' instead of 'of 4'. The Space Plan Overview chart stops lying about parent bays: usage rolls up the full sub-location subtree against sum-of-children capacity, the Space Type filter actually filters now, and the chart refreshes on revisit without a hard reload.",
+  "look_for": "In the schedule grid, two sibling component jobs under one combo lot showing the SAME Step number, and the Job Details chip totaling distinct start weeks ('Step 2 of 2'). On Space Plan > Overview, a parent bay's line sitting above 0% (previously flatlined), the new 'Space Type' select in the Controls panel visibly refetching the chart, and the Usage/Remaining toggle inverting the lines."
+ },
+ {
+  "id": 9062,
+  "product": "PLATFORM",
+  "video": "9062.webm",
+  "repo": "worksuite-pwa",
+  "title": "Scanner-enabled mobile location search",
+  "desc": "Scanner-enabled location search for the mobile Material and Availability location pickers. A new per-device toggle pair in Settings \u2192 Mobile Features adds a camera scan button to the location search bar; scanning a bin/location barcode or QR populates the search and resolves it against location code, ERP ID, or store number \u2014 an exact match auto-selects the location. Camera permission-denied and no-camera states fail gracefully inline, and manual text search is unchanged (feature is off by default).",
+  "look_for": "Search bar with no scan button at first; the Mobile Features toggles in Settings; the qr_code_scanner button appearing in the Material picker; the camera panel opening with a graceful inline error (or live feed); then a typed bin code resolving to the seeded bin and landing on the Count page with the location locked in the header."
+ },
+ {
+  "id": 8089,
+  "product": "PRODUCE",
+  "video": "8089.webm",
+  "repo": "worksuite-pwa",
+  "title": "Hardgoods Inventory \u2014 live data",
+  "desc": "Hardgoods Inventory page is now wired to real data: per-bin on-hand, last-counted, and cycle-count status from hardgoodsInventoryGrid, recipe-required quantities + coverage % per ready week, and human-readable item/bin names \u2014 plus a 'Review Hardgoods' deep-link from the Production Schedule that carries the selected job's site and ready week.",
+  "look_for": "Deep-link from Production Schedule lands on /produce/inventory/hardgoods with siteLocationId + readyWeek (2026-WW) in the URL; grid shows the seeded item split into 3 bin rows (On Hand 24/12/7) with real names instead of GUIDs, Last Counted 'Today'; ready-week picker + recipe-coverage chip in the sub-header; row click opens the read-only side panel with On Hand/Required/Variance and disabled Adjust/Move/Reconcile actions."
+ },
+ {
+  "id": 8220,
+  "product": "PRODUCE",
+  "video": "8220.webm",
+  "repo": "worksuite-pwa",
+  "title": "Assign Cycle Count \u2014 wired to backend",
+  "desc": "Hardgoods Inventory (PRODUCE > Hardgood Inventory > Hardgoods) now creates real cycle-count assignments: click a row, hit Assign Cycle Count in the side panel, set a due date, and submit \u2014 the createCountAssignment mutation fires, a 'Assignment created \u2014 3 tasks' snack confirms one count task per stocked bin, and every bin row of the item instantly shows Count Status 'Assigned' via an optimistic grid update (no reload). The page itself was also upgraded from cards to the standard AG Grid with On Hand / Required / Variance / Count Status columns.",
+  "look_for": "Watch that the update is instant and reload-free: after 'Assign Count', the snack reads 'Assignment created \u2014 3 tasks' and ALL three bin rows of the item flip to 'Assigned' with no spinner, the side panel gains an 'Assigned' chip, and the Assign Cycle Count button disables to block duplicates. Also note the submit button is gated on the required 'Due by' date."
+ },
+ {
+  "id": 8876,
+  "product": "PRODUCE",
+  "video": "8876.webm",
+  "repo": "worksuite-pwa",
+  "title": "Count assignment \u2014 Worker (assignee) picker",
+  "desc": "Cycle-count assignments on the Hardgoods Inventory page can now be assigned to a worker at creation time. The Assign Cycle Count dialog gets an optional Worker picker that reuses the existing ERP load-list user roster (active users only, shown by email). Picking a worker sends the assignment to them and surfaces the assignee in the success toast and as an \"Assigned: <email>\" chip in the item side panel \u2014 leaving it blank creates an unassigned count exactly as before.",
+  "look_for": "In the Assign Cycle Count dialog: the new \"Worker (optional)\" dropdown listing active ERP load-list users by email. After submitting with a worker picked: the success toast reading \"Assignment created \u2014 3 tasks sent to <email>\" and the side panel showing the filled \"Assigned: <email>\" chip beside the \"Assigned\" status chip, with the Assign Cycle Count button now disabled and the grid's Count Status column flipped to \"Assigned\"."
+ },
+ {
+  "id": 8093,
+  "product": "PRODUCE",
+  "video": "8093.webm",
+  "repo": "worksuite-pwa",
+  "title": "Mobile \"My Counts Today\" (assigned cycle counts)",
+  "desc": "Workers now get a \"My Counts Today\" screen in the Material mobile app. Cycle counts assigned from the desktop Hardgoods Inventory page (one task per bin where the item is stocked) appear on the assignee's phone with expected quantities and a progress bar. Counting a quantity that matches expectations submits in one tap; any variance forces a reason pick (Damaged, Moved, etc.) before submitting, and unreachable bins can be skipped with a note. Submissions post through the offline-capable queue and completed counts write straight back to hardgoods on-hand.",
+  "look_for": "Watch the full loop: desktop 'Assign Cycle Count' dialog creating 3 tasks (one per bin) sent to the worker; the mobile list showing Expected 24/12/7 with live progress; the variance gate \u2014 submitting 11 vs expected 12 is blocked until a Variance Reason is chosen; and the ending 'All counts complete for today' celebration once all 3 bins are counted."
+ },
+ {
+  "id": 7753,
+  "product": "RESTOCK",
+  "video": "7753.webm",
+  "repo": "worksuite-pwa",
+  "title": "Mobile Material \u2014 Move + Receive Transfer",
+  "desc": "Mobile Material: cross-site moves now create + ship real Transfer Orders (MovementOrder aggregate), and a new Receive Transfer screen \u2014 behind a Vendor PO / Transfer Order toggle on Receive \u2014 lists inbound shipped TOs and posts received quantities line-by-line via receiveMovementOrder, with offline queueing and History chips for the new op types.",
+  "look_for": "Watch the full round trip: a 5-unit cross-site move from the seeded bin (24 on hand) fires the 'Queued transfer posted' snack and a 'Transfer' Posted card in History; after switching to the destination site, the new Transfer Order toggle reveals the pending TO with a 'Ready' chip, 'Fill all expected (5)' arms the 'Receive 5 Items' bar, and the demo ends on the 'Transfer Receipt Submitted' success screen \u2014 proof the create/ship/receive MovementOrder mutations are wired end to end."
+ },
+ {
+  "id": 7861,
+  "product": "RESTOCK",
+  "video": "7861.webm",
+  "repo": "worksuite-pwa",
+  "title": "Mobile Material \u2014 History tab (transfers, filters)",
+  "desc": "Mobile Material History now merges transfer-order ship/receive events into the transaction feed as first-class rows with new \"Shipped\" and \"Received Transfer\" chips, adds a Transfers option to the type filter, humanizes count reason codes, and hardens the PO receive drilldown with pagination past 100 rows and offline cached fallback.",
+  "look_for": "On /mobile/material/history (mobile width, location selected): the five-way filter bar All/Receives/Counts/Moves/Transfers, the three seeded Count rows (0 -> 24, 0 -> 12, 0 -> 7) grouped under today's date, the filter narrowing live as toggles are tapped, and transfer rows carrying a movement-order ID with from -> to location arrows (or the new Transfers filter's clean empty state if no transfer exists at the bin)."
+ },
+ {
+  "id": 9110,
+  "product": "FULFILL",
+  "video": "9110.webm",
+  "repo": "worksuite-pwa",
+  "title": "Transfer order to a new customer (Bonnie)",
+  "desc": "Transfer order to a new customer (Bonnie/BPF-flagged): a new 'Transfer to New Customer' ribbon action on the FULFILL order page fixes wrong-customer orders. Pick a new customer in a modal; one click atomically creates a replacement Submitted order for the new customer plus a Credit order for the original customer \u2014 same items, PO, ship-from, delivery date, terms, and mirrored freight/discount \u2014 while leaving the source order untouched. Gated by the per-tenant ORDER_CORRECTION feature flag (BPF only); backend correctOrder mutation shipped in wsapi PR 9107.",
+  "look_for": "On a BPF order: the swap_horiz 'Transfer to New Customer' button at the end of the left ribbon group; modal explains the new-order-plus-credit outcome and blocks picking the same customer; on confirm, the success snack names BOTH new order numbers and the app lands on the new customer's replacement order with identical line items; back in the grid, a consecutive Credit order exists for the original customer and the source order is byte-for-byte unchanged. Flag check: the button must NOT appear on SFG."
+ },
+ {
+  "id": 9171,
+  "product": "FULFILL",
+  "video": "9171.webm",
+  "repo": "worksuite-pwa",
+  "title": "Order CSV import \u2014 64-char PO numbers",
+  "desc": "Order CSV import now accepts PO numbers up to 64 characters (previously capped at 15), so customer-supplied long PO numbers no longer fail import validation. The limit is shared between both import flows (BPF and standard) and the same 64-char cap is enforced on PO Number fields in the order forms. Companion to the matching API-side change.",
+  "look_for": "A CSV row with a 50-character PO number sails through the import wizard: 'Format Validation Successful' with no 'PO Number Format Errors' section at the Validate Format step (pre-change this exact file was rejected with 'Invalid PO Number'), then data validation passes and the order imports with '1 Success'."
+ },
+ {
+  "id": 8571,
+  "product": "PRODUCE",
+  "video": "8571.webm",
+  "repo": "worksuite-pwa",
+  "title": "Space Events CSV importer",
+  "desc": "Space Events can now be bulk-loaded from a CSV instead of keyed one at a time. From the Space tab on the Production Events page, a new Import button opens a guided 6-step wizard: upload your file (a downloadable template is provided), preview the rows, then two validation passes \u2014 format checks (required fields, positive-integer durations, duplicate names) and data checks that match each row's CategoryCode, TypeCode, and Trigger against the tenant's existing space categories, space types, and triggers. Rows with unresolvable references are flagged and skipped; everything valid imports as a new Space Event with its detail already wired to the right category, type, and trigger.",
+  "look_for": "The stepper advancing through all six stages on a 2-row CSV: the green 'Format Validation Successful' alert, the 'Ready to import: 2 valid, 0 errors, 0 warnings' toast, the Import Preview grid showing both rows as 'valid', and the 'Import Successful' results screen with the '2 Space Events Imported' chip. Then the payoff: back on the Space tab, the two new events appear in the sidebar, and opening one shows its detail row with real resolved references \u2014 Space Category SP-4IN, Space Type Floor, Trigger 'At Start', Duration 14 \u2014 proving the CSV codes were matched to live entities, not just stored as text."
+ },
+ {
+  "id": 8403,
+  "product": "FULFILL",
+  "video": null,
+  "repo": "worksuite-pwa",
+  "title": "GrowPoint Orders validation tab",
+  "desc": "Added an Open Sales Orders / Master Orders data-validation surface to the legacy-erp (GrowPoint) integration screen.",
+  "look_for": "",
+  "no_video_reason": "The GrowPoint integration UI was removed from worksuite-pwa later in the sprint (moved admin-side) \u2014 no longer demoable in the PWA."
+ },
+ {
+  "id": 9170,
+  "product": "FULFILL",
+  "video": null,
+  "repo": "wsapi",
+  "title": "PO number max length 15 \u2192 64 (wsapi)",
+  "desc": "Widened the ValidPoNumber cap to 64 chars, matching other free-form external reference fields.",
+  "look_for": "",
+  "no_video_reason": "Backend valid-type change \u2014 demonstrated implicitly by the CSV-import video (#9171)."
+ },
+ {
+  "id": 9198,
+  "product": "FULFILL",
+  "video": null,
+  "repo": "wsapi",
+  "title": "Merge.dev PricingImport default-enabled (worker)",
+  "desc": "QuickBooks unit prices now sync into the managed \"QuickBooks\" price group by default, like other inbound flows.",
+  "look_for": "",
+  "no_video_reason": "Background worker configuration default \u2014 no UI surface to film."
+ },
+ {
+  "id": 8991,
+  "product": "FULFILL",
+  "video": null,
+  "repo": "wsapi",
+  "title": "Merge.dev Contact: always send vendor billingAddress",
+  "desc": "Fixed the contact import (57/67 every cycle) by always sending the non-null vendor billing address and logging silent merge-call failures.",
+  "look_for": "",
+  "no_video_reason": "Backend import-handler fix \u2014 visible only in sync logs."
+ },
+ {
+  "id": 8693,
+  "product": "PRODUCE",
+  "video": null,
+  "repo": "worksuite-pwa",
+  "title": "HGI-15: e2e cycle-count hardening",
+  "desc": "Hardened the cycle-count Playwright suite with deterministic data-testid selectors and listener cleanup.",
+  "look_for": "",
+  "no_video_reason": "Test-suite hardening \u2014 no product UI to film."
+ },
+ {
+  "id": 8522,
+  "product": "PRODUCE",
+  "video": null,
+  "repo": "worksuite-pwa",
+  "title": "ML-01: shared mobile location domain model",
+  "desc": "Canonical mobile location node model (site/region/route/location/bin) + adapters shared across Material, Availability and Engage.",
+  "look_for": "",
+  "no_video_reason": "Internal domain model powering the mobile screens demoed above \u2014 no standalone UI."
+ },
+ {
+  "id": 8357,
+  "product": "PRODUCE",
+  "video": null,
+  "repo": "worksuite-pwa",
+  "title": "HGI-UX-1: fix [object Object] error snacks",
+  "desc": "New pure formatter so load-error snacks and logs show real error detail instead of [object Object].",
+  "look_for": "",
+  "no_video_reason": "Error-formatting fix \u2014 filming it would require forcing a backend failure."
+ },
+ {
+  "id": 8741,
+  "product": "FULFILL",
+  "video": null,
+  "repo": "worksuite-pwa",
+  "title": "Remove deprecated desktop Availability view",
+  "desc": "Removed the session-based Availability view (~33 files), its CSV import flow, route and nav entry \u2014 Inventory replaces it.",
+  "look_for": "",
+  "no_video_reason": "Removal PR \u2014 the old view is gone; nothing to film."
+ },
+ {
+  "id": 8719,
+  "product": "FULFILL",
+  "video": null,
+  "repo": "worksuite-pwa",
+  "title": "Remove deprecated Retail Price column",
+  "desc": "Removed the deprecated Retail Price column from Fulfill > Product > Items; grid test asserts absence.",
+  "look_for": "",
+  "no_video_reason": "Removal PR \u2014 the column is simply gone from the grid."
  }
 ]
