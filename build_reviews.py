@@ -11,8 +11,6 @@ PR = "https://dev.azure.com/teamsilverfern/SilverFern/_git/{repo}/pullrequest/{i
 
 REVIEWS = __import__("json").load(open(__import__("os").path.join(__import__("os").path.dirname(__file__), "reviews_copy.json")))
 
-TOTAL_HIGHLIGHTS = len(REVIEWS)
-
 def card(r):
     c = PRODUCT_COLORS.get(r["product"], "#6B7280")
     url = PR.format(repo=r["repo"], id=r["id"])
@@ -54,6 +52,7 @@ def _chip(label, value, color):
             f'style="background:{color}; border:none; cursor:pointer; opacity:{1 if value=="ALL" else 0.45};">{label}</button>')
 chips = _chip("All", "ALL", "#3F4948") + "".join(_chip(p, p, PRODUCT_COLORS.get(p, "#6B7280")) for p in _prods)
 recorded = sum(1 for r in REVIEWS if r.get("video") and os.path.exists(os.path.join(os.path.dirname(__file__), "videos", r["video"])))
+TOTAL_HIGHLIGHTS = recorded
 
 HTML = f'''<!doctype html>
 <html lang="en">
