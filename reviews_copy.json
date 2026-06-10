@@ -256,36 +256,6 @@
   "no_video_reason": "Backend import-handler fix \u2014 visible only in sync logs."
  },
  {
-  "id": 8693,
-  "product": "PRODUCE",
-  "video": null,
-  "repo": "worksuite-pwa",
-  "title": "HGI-15: e2e cycle-count hardening",
-  "desc": "Hardened the cycle-count Playwright suite with deterministic data-testid selectors and listener cleanup.",
-  "look_for": "",
-  "no_video_reason": "Test-suite hardening \u2014 no product UI to film."
- },
- {
-  "id": 8522,
-  "product": "PRODUCE",
-  "video": null,
-  "repo": "worksuite-pwa",
-  "title": "ML-01: shared mobile location domain model",
-  "desc": "Canonical mobile location node model (site/region/route/location/bin) + adapters shared across Material, Availability and Engage.",
-  "look_for": "",
-  "no_video_reason": "Internal domain model powering the mobile screens demoed above \u2014 no standalone UI."
- },
- {
-  "id": 8357,
-  "product": "PRODUCE",
-  "video": null,
-  "repo": "worksuite-pwa",
-  "title": "HGI-UX-1: fix [object Object] error snacks",
-  "desc": "New pure formatter so load-error snacks and logs show real error detail instead of [object Object].",
-  "look_for": "",
-  "no_video_reason": "Error-formatting fix \u2014 filming it would require forcing a backend failure."
- },
- {
   "id": 8741,
   "product": "FULFILL",
   "video": null,

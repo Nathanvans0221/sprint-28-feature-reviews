@@ -8,9 +8,10 @@ PRODUCT_COLORS = {
     'AVAILABILITY': '#10B981', 'INVENTORY': '#F59E0B', 'OTHER': '#9CA3AF',
 }
 PR = "https://dev.azure.com/teamsilverfern/SilverFern/_git/{repo}/pullrequest/{id}"
-TOTAL_HIGHLIGHTS = 33
 
 REVIEWS = __import__("json").load(open(__import__("os").path.join(__import__("os").path.dirname(__file__), "reviews_copy.json")))
+
+TOTAL_HIGHLIGHTS = len(REVIEWS)
 
 def card(r):
     c = PRODUCT_COLORS.get(r["product"], "#6B7280")
